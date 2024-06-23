@@ -1,0 +1,1 @@
+this is the backend (node+mongodb) for our project EduCollabHub whose front end is named as edu
