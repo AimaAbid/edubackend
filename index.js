@@ -21,6 +21,13 @@ app.use("/users", userRoutes);
 var postRoutes = require("./routes/postRoutes");
 app.use("/posts", postRoutes);
 
+var commentRoutes = require("./routes/commentRoutes");
+app.use("/comments", commentRoutes);
+
+var quizRoutes = require("./routes/quizRoutes");
+
+app.use("/quiz", quizRoutes);
+
 mongoose
 	.connect("mongodb://127.0.0.1:27017/educollabhub")
 	.then(() => {

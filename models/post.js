@@ -3,10 +3,11 @@ var Schema = mongoose.Schema;
 
 var postSchema = new Schema({
 	title: String,
-	description: String,
-	mainBody: String,
+	subject: String,
+	bodySection: String,
     userId: { type: Schema.Types.ObjectId, ref: 'user', required: true }, // Reference to User
-    imgPath:Array
+    imgPath:Array,
+	date:String
 	
 });
 

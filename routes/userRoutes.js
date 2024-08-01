@@ -25,28 +25,9 @@ Router.put("/:id", (req, res) => {
 	user
 		.findByIdAndUpdate(req.params.id, req.body)
 		.then((user) => res.status(200).send("User Updated Successfully!"))
-		.catch(() => res.send("some error"));
+		.catch((err) => res.send(err.message));
 });
-//add user
-Router.post("/", (req, res) => {
-	newUser = new user({
-		name: req.body.name,
-		email: req.body.email,
-		imgPath: req.body.imgPath,
-		resumePath: req.body.resumePath,
-	});
-	newUser
-		.save()
-		.then(() => {
-			console.log("saved");
-		})
-		.catch((err) => {
-			console.log(err);
-		});
-          console.log(newUser._id)
-        res.status(200).send(newUser._id);
-        
-});
+
 
 //delete user
 Router.delete("/:id", (req, res) => {
@@ -111,10 +92,10 @@ Router.post('/login', async (req, res) => {
     const { name, password } = req.body;
 
     try {
-        const newuser = await user.findOne({ name: name, password: password });
+        const newUser = await user.findOne({ name: name, password: password });
 
-        if (newuser) {
-            res.status(200).json({ userId: user._id, message: 'Login successful!' });
+        if (newUser) {
+            res.status(200).json({ userId: newUser._id, message: 'Login successful!' });
         } else {
             res.status(400).json({ message: 'Login failed! Invalid email or password.' });
         }
