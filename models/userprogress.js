@@ -7,7 +7,8 @@ var userprogressSchema = new Schema({
 	badges: {
 		type: [String],
 		default: [] // Ensure badges is an array by default
-	  }
+	  },
+	  finalExamCorrectAnswers:Number
 });
 
 var userprogress = mongoose.model("Userprogress", userprogressSchema);

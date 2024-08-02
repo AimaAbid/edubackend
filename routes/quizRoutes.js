@@ -97,4 +97,67 @@ Router.get('/points/:userId', async (req, res) => {
 	res.json({ badges: searchedUserProgress ? searchedUserProgress.badges : [] });
   });
 
+  // Endpoint to submit final exam answers
+// Endpoint to submit final exam answers
+// Endpoint to submit final exam answers
+
+
+// Endpoint to submit final exam answers
+Router.post('/final-exam/answers', async (req, res) => {
+  console.log('Received body:', req.body); // Log the incoming body
+
+  try {
+    const { userId, answers } = req.body;
+
+    // Validate that `answers` is an array
+    if (!Array.isArray(answers)) {
+      return res.status(400).json({ error: 'Answers should be an array' });
+    }
+
+    let correctAnswersCount = 0;
+
+    for (const answer of answers) {
+      const { questionId, selectedAnswer } = answer;
+
+      if (!questionId || !selectedAnswer) {
+        continue; // Skip invalid answers
+      }
+
+      const foundQuestion = await question.findById(questionId);
+
+      if (foundQuestion && foundQuestion.correctAnswer === selectedAnswer) {
+        correctAnswersCount++;
+      }
+    }
+
+    let foundUserProgress = await userprogress.findOne({ userId });
+
+    if (!foundUserProgress) {
+      foundUserProgress = new userprogress({ userId, points: 0, badges: [] });
+    }
+
+    const score = correctAnswersCount * 10; // Adjust scoring as needed
+    foundUserProgress.points += score;
+
+    if (correctAnswersCount >= 17 && !foundUserProgress.badges.includes('Course Completion')) {
+      foundUserProgress.badges.push('Course Completion');
+    }
+
+    await foundUserProgress.save();
+
+    res.json({
+      correctAnswersCount,
+      totalPoints: foundUserProgress.points,
+      badges: foundUserProgress.badges
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
+
+
+  
+
 module.exports = Router;
